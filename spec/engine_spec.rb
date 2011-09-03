@@ -11,6 +11,45 @@ describe Ayl::Engine do
       engine.should be_an_instance_of(Ayl::Engine)
     end
 
+    it "should allow a different engine to be configured and selected if active" do
+      mock_engine = mock("FakeEngine")
+      mock_engine.should_receive(:respond_to?).with(:asynchronous?).and_return(true)
+      mock_engine.should_receive(:respond_to?).with(:is_connected?).and_return(true)
+      mock_engine.should_receive(:is_connected?).and_return(true)
+      
+      Ayl::Engine.clear_engines
+      Ayl::Engine.add_engine(mock_engine)
+
+      Ayl::Engine.get_active_engine.should == mock_engine
+    end
+
+    it "should allow a different engine to be configured but select the default if the new one is not active" do
+      mock_engine = mock("FakeEngine")
+      mock_engine.should_receive(:respond_to?).with(:asynchronous?).and_return(true)
+      mock_engine.should_receive(:respond_to?).with(:is_connected?).and_return(true)
+      mock_engine.should_receive(:is_connected?).and_return(false)
+
+      Ayl::Engine.clear_engines
+      Ayl::Engine.add_engine(mock_engine)
+
+      Ayl::Engine.get_active_engine.should == Ayl::Engine.instance
+    end
+
+    it "should raise an exception if a new engine is added that doesn't respond to :asynchronous" do
+      mock_engine = mock("FakeEngine")
+      mock_engine.should_receive(:respond_to?).with(:asynchronous?).and_return(false)
+      
+      lambda { Ayl::Engine.add_engine(mock_engine) }.should raise_error
+    end
+
+    it "should raise an exception if a new engine is added that doesn't respond to :is_connected" do
+      mock_engine = mock("FakeEngine")
+      mock_engine.should_receive(:respond_to?).with(:asynchronous?).and_return(true)
+      mock_engine.should_receive(:respond_to?).with(:is_connected?).and_return(false)
+      
+      lambda { Ayl::Engine.add_engine(mock_engine) }.should raise_error
+    end
+
   end
 
   context "Default Engine Behavior" do
