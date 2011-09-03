@@ -17,10 +17,10 @@ Jeweler::Tasks.new do |gem|
   gem.name = "ayl"
   gem.homepage = "http://github.com/j0hnds/ayl"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Invoke code 'at your leisure'}
+  gem.description = %Q{Invoke code 'at your leisure'}
   gem.email = "j0hnds@gmail.com"
-  gem.authors = ["j0hnds@gmail.com"]
+  gem.authors = ["Dave Sieh"]
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
