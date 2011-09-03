@@ -14,11 +14,11 @@ module Ayl
     def submit
       engine = Ayl::Engine.get_active_engine
 
-      engine.put rrepr, @options
+      engine.put to_rrepr, @options
     end
 
-    def rrepr
-      @code ||= %Q{#{@object.rrepr}.#{@selector}(#{@arguments.rrepr[1...-1]})}
+    def to_rrepr
+      @code ||= %Q{#{@object.to_rrepr}.#{@selector}(#{@arguments.to_rrepr[1...-1]})}
     end
 
   end

@@ -11,9 +11,9 @@ module Ayl
       message.submit
     end
 
-    def rrepr()
+    def to_rrepr()
       method = (respond_to? :get_cache) ? 'get_cache' : 'find'
-      "#{self.class.rrepr}.#{method}(#{id.rrepr})"
+      "#{self.class.to_rrepr}.#{method}(#{id.to_rrepr})"
     end
 
   end
@@ -21,49 +21,49 @@ module Ayl
 end
 
 class Symbol
-  def rrepr() inspect end
+  def to_rrepr() inspect end
 end
 
 class Module
-  def rrepr() name end
+  def to_rrepr() name end
 end
 
 class NilClass
-  def rrepr() inspect end
+  def to_rrepr() inspect end
 end
 
 class FalseClass
-  def rrepr() inspect end
+  def to_rrepr() inspect end
 end
 
 class TrueClass
-  def rrepr() inspect end
+  def to_rrepr() inspect end
 end
 
 class Numeric
-  def rrepr() inspect end
+  def to_rrepr() inspect end
 end
 
 class String
-  def rrepr() inspect end
+  def to_rrepr() inspect end
 end
 
 class Array
-  def rrepr() '[' + map(&:rrepr).join(', ') + ']' end
+  def to_rrepr() '[' + map(&:to_rrepr).join(', ') + ']' end
 end
 
 class Hash
-  def rrepr() '{' + map{|k,v| k.rrepr + '=>' + v.rrepr}.join(', ') + '}' end
+  def to_rrepr() '{' + map{|k,v| k.to_rrepr + '=>' + v.to_rrepr}.join(', ') + '}' end
 end
 
 class Range
-  def rrepr() "(#{first.rrepr}#{exclude_end? ? '...' : '..'}#{last.rrepr})" end
+  def to_rrepr() "(#{first.to_rrepr}#{exclude_end? ? '...' : '..'}#{last.to_rrepr})" end
 end
 
 class Time
-  def rrepr() "Time.parse('#{self.inspect}')" end
+  def to_rrepr() "Time.parse('#{self.inspect}')" end
 end
 
 class Date
-  def rrepr() "Date.parse('#{self.inspect}')" end
+  def to_rrepr() "Date.parse('#{self.inspect}')" end
 end

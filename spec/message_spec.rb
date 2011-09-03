@@ -31,13 +31,13 @@ describe Ayl::Message do
     it "should generate code when arguments are present" do
       options = Ayl::MessageOptions.new
       m = Ayl::Message.new("object", :method_name, options, "arg1", "arg2")
-      m.rrepr.should == "\"object\".method_name(\"arg1\", \"arg2\")"
+      m.to_rrepr.should == "\"object\".method_name(\"arg1\", \"arg2\")"
     end
 
     it "should generate code when no arguments are present" do
       options = Ayl::MessageOptions.new
       m = Ayl::Message.new("object", :method_name, options)
-      m.rrepr.should == "\"object\".method_name()"
+      m.to_rrepr.should == "\"object\".method_name()"
     end
 
   end

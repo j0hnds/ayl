@@ -15,7 +15,7 @@ module Ayl
     def is_connected?() true end
 
     def submit(message)
-      eval(message.rrepr)
+      eval(message.to_rrepr)
     end
   end
 

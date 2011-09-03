@@ -29,7 +29,7 @@ describe Ayl::Engine do
 
     it "should simply execute the code provided in the message submission" do
       mock_message = mock("Ayl::Message")
-      mock_message.should_receive(:rrepr).and_return('"a_string".length')
+      mock_message.should_receive(:to_rrepr).and_return('"a_string".length')
 
       @default_engine.submit(mock_message).should == 8
     end
