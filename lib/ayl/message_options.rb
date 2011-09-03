@@ -2,19 +2,19 @@ module Ayl
 
   class MessageOptions
 
-    OPTIONS = [ :pri, :fuzz, :delay, :ttr, :queue_name ]
+    OPTIONS = [ :priority, :fuzz, :delay, :time_to_run, :queue_name ]
 
     attr_accessor *OPTIONS
 
     class << self
-      attr_accessor :default_pri, :default_fuzz, :default_delay, :default_ttr, :default_queue_name
+      attr_accessor :default_priority, :default_fuzz, :default_delay, :default_time_to_run, :default_queue_name
     end
 
     # Set the default options
-    self.default_pri = 512
+    self.default_priority = 512
     self.default_fuzz = 0
     self.default_delay = 0
-    self.default_ttr = 120
+    self.default_time_to_run = 120
     self.default_queue_name = 'default'
 
     def initialize(opts=nil)
