@@ -75,4 +75,15 @@ describe Ayl::Engine do
 
   end
 
+  context "Client-side behavior" do
+
+    it "should raise an exception if receive is called on an engine that is not asynchronous" do
+      # The default engine is not async
+      Ayl::Engine.clear_engines
+      engine = Ayl::Engine.get_active_engine
+      lambda { engine.process_messages }.should raise_error
+    end
+
+  end
+
 end

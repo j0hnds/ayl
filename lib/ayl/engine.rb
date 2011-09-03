@@ -34,6 +34,10 @@ module Ayl
     def submit(message)
       eval(message.to_rrepr)
     end
+
+    def process_messages
+      raise "asynchronous engine cannot receive messages" unless asynchronous?
+    end
   end
 
 end
