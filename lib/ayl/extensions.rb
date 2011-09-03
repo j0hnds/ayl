@@ -7,8 +7,9 @@ module Ayl
     end
 
     def ayl_send_opts(selector, opts, *args)
+      engine = Ayl::Engine.get_active_engine
       message = Message.new(self, selector, MessageOptions.new(opts), *args)
-      message.submit
+      engine.submit(message)
     end
 
     def to_rrepr()

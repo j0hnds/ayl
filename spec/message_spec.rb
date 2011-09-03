@@ -42,18 +42,4 @@ describe Ayl::Message do
 
   end
 
-  context "Message Submission" do
-    
-    it "should submit a message" do
-      options = Ayl::MessageOptions.new
-      m = Ayl::Message.new("object", :method_name, options, "arg1", "arg2")
-
-      mock_engine = mock("Engine")
-      mock_engine.should_receive(:put).with("\"object\".method_name(\"arg1\", \"arg2\")", options)
-
-      Ayl::Engine.should_receive(:get_active_engine).and_return(mock_engine)
-      m.submit
-    end
-  end
-
 end
