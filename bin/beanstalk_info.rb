@@ -132,6 +132,13 @@ class BeanstalkCommander
     puts "Job was put"
   end
 
+  def put_ayl_job(job_body)
+    raise "Must specify a job body to put" unless job_body
+    puts "Putting (#{job_body}) on tube: #{@tube}"
+    pool.put({:type => :ayl, :code => job_body}.to_yaml)
+    puts "Job was put"
+  end
+
   def put_sleep_job(*args)
     puts "Putting job on tube '#{@tube}' that will sleep for 20 seconds."
     pool.use(@tube)
@@ -214,7 +221,7 @@ end
 
 BEANSTALK_HOST_DEFAULT = 'localhost'
 BEANSTALK_PORT_DEFAULT = 11300
-DEFAULT_APP_TUBE_NAME = "0.00.#{Date.today.strftime('%Y%m%d')}"
+DEFAULT_APP_TUBE_NAME = "default"
 
 options = {}
 
