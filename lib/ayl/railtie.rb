@@ -6,8 +6,11 @@ module Ayl
     HOOKS = [ :after_update, :after_create, :after_save ]
 
     initializer "Ayl::Railtie.extend" do
+      # Want the ayl_send/opts at the instance level
       ActiveRecord::Base.send :include, Extensions
+      # Want the instance-level stuff there.
       ActiveRecord::Base.send :include, InstanceExtensions
+      # Want the ayl_send/opts at the class level as well
       ActiveRecord::Base.send :extend, Extensions
     end
 
@@ -51,6 +54,9 @@ module Ayl
             #
             # What this means is that the block will be executed after
             # the model has been save/created.
+            #
+            # So, the self.class target for the ayl_send is because we
+            # need to call the ayl_send method at the singleton level.
             #
             send(hook) { |o| self.class.ayl_send(ahook, o) }
 
