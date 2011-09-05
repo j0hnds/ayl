@@ -7,6 +7,7 @@ module Ayl
       def initialize(host='localhost', port=11300)
         @host = host
         @port = port
+        @stop = false
       end
 
       def asynchronous?() true end
@@ -28,6 +29,8 @@ module Ayl
       end
 
       def process_messages
+        trap('TERM') { puts "## Got the term signal"; @stop = true }
+        trap('INT') { puts "## Got the int signal"; @stop = true }
         pool.watch(Ayl::MessageOptions.default_queue_name)
         while true
           job = pool.reserve

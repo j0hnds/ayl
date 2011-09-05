@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 require 'daemons'
-require 'beanstalk-client'
-require 'ayl'
 
 sdir = File.dirname(File.absolute_path($0))
 sname = File.basename($0).gsub('_control', '')
