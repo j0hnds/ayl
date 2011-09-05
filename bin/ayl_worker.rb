@@ -29,6 +29,16 @@ optparse = OptionParser.new do | opts |
     options[:tube] = tube
   end
 
+  options[:env] = 'production'
+  opts.on '-e', '--environment ENVIRONMENT', "Specify the Rails environment to use" do |environment|
+    options[:env] = environment
+  end
+
+  options[:app_path] = nil
+  opts.on '-a', '--app-path APP_PATH', "Specify the path to the rails app" do |app_path|
+    options[:app_path] = app_path
+  end
+
   opts.on '-h', '--help', 'Display the help message' do
     puts opts
     exit
@@ -36,6 +46,18 @@ optparse = OptionParser.new do | opts |
 end
 
 optparse.parse!
+
+if options[:app_path].nil?
+  puts "Must specify an application path"
+  exit
+end
+
+ENV['RAILS_ENV'] = options[:env]
+
+# Now require the rails application
+require File.join(options[:app_path], 'config/environment')
+
+puts "### The Rails envionment: #{Rails.env}"
 
 Ayl::MessageOptions.default_queue_name = options[:tube]
 

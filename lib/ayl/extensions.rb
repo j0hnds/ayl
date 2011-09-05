@@ -12,11 +12,13 @@ module Ayl
       engine.submit(message)
     end
 
+  end
+
+  module InstanceExtensions
     def to_rrepr()
       method = (respond_to? :get_cache) ? 'get_cache' : 'find'
       "#{self.class.to_rrepr}.#{method}(#{id.to_rrepr})"
     end
-
   end
 
 end
