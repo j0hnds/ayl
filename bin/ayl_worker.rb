@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 require 'optparse'
-require 'beanstalk-client'
+# require 'beanstalk-client'
+require 'rails'
 require 'ayl'
 
 BEANSTALK_HOST_DEFAULT = 'localhost'
@@ -39,6 +40,11 @@ optparse = OptionParser.new do | opts |
     options[:app_path] = app_path
   end
 
+  options[:rails_app] = false
+  opts.on '-r', '--rails', "Indicate that we are starting a rails application" do 
+    options[:rails_app] = true
+  end
+
   opts.on '-h', '--help', 'Display the help message' do
     puts opts
     exit
@@ -54,13 +60,28 @@ end
 
 ENV['RAILS_ENV'] = options[:env]
 
+if options[:rails_app]
+  require 'rails' 
+  require File.join(options[:app_path], 'config/environment')
+end
+
+
+# $: << options[:app_path]
+# Dir.chdir(options[:app_path])
+# $: << options[:app_path]
+
 # Now require the rails application
-require File.join(options[:app_path], 'config/environment')
+# require File.join(options[:app_path], 'config/environment')
+# require 'config/environment'
 
 puts "### The Rails envionment: #{Rails.env}"
 
 Ayl::MessageOptions.default_queue_name = options[:tube]
 
-engine = Ayl::Beanstalk::Engine.new(options[:host], options[:port])
+engine = Ayl::Engine.get_active_engine
+# engine = Ayl::Beanstalk::Engine.new(options[:host], options[:port])
 
 engine.process_messages
+
+# engine = Ayl::Engine.get_active_engine
+# engine.process_messages
