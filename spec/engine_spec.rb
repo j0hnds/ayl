@@ -67,6 +67,11 @@ describe Ayl::Engine do
     end
 
     it "should simply execute the code provided in the message submission" do
+      mock_logger = mock("Ayl::Logger")
+      mock_logger.stub(:info)
+      
+      Ayl::Logger.instance.logger = mock_logger
+
       mock_message = mock("Ayl::Message")
       mock_message.should_receive(:to_rrepr).and_return('"a_string".length')
 
