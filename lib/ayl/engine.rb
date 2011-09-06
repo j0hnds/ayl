@@ -4,6 +4,7 @@ module Ayl
 
   class Engine
     include Singleton
+    include Ayl::Logging
 
     class << self
 
@@ -27,15 +28,6 @@ module Ayl
         @engines ||= []
       end
 
-    end
-
-    def logger() Logger.instance end
-
-    def log_call(method)
-      logger.info "#{self.class.name} invoking #{method}"
-      yield
-    ensure
-      logger.info "#{self.class.name} done invoking #{method}"
     end
 
     # These methods define the API that must be implemented

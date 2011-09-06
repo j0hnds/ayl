@@ -1,3 +1,4 @@
+require 'ayl/logging'
 require 'ayl/extensions'
 require 'ayl/message'
 require 'ayl/engine'

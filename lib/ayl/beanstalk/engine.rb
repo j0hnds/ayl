@@ -2,7 +2,8 @@ module Ayl
 
   module Beanstalk
 
-    class Engine < Ayl::Engine
+    class Engine
+      include Ayl::Logging
 
       def initialize(host='localhost', port=11300)
         logger.info "#{self.class.name}.initialize(#{host.inspect}, #{port})"
