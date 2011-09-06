@@ -44,7 +44,11 @@ module Ayl
     def is_connected?() true end
 
     def submit(message)
-      log_call(:submit) { eval(message.to_rrepr) }
+      log_call(:submit) do
+        code = message.to_rrepr
+        logger.info code
+        eval(code) 
+      end
     end
 
     def process_messages
