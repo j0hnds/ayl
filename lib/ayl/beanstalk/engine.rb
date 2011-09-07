@@ -19,7 +19,7 @@ module Ayl
         begin
           pool
         rescue ::Beanstalk::NotConnected => ex
-          logger "#{self.class.name} not connected error: #{ex}"
+          logger.error "#{self.class.name} not connected error: #{ex}"
           connected = false
         end
         connected
