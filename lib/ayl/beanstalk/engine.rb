@@ -31,7 +31,7 @@ module Ayl
             pool.use(message.options.queue_name)
             code = message.to_rrepr
             logger.info "#{self.class.name} submitting '#{code}' to tube '#{message.options.queue_name}'"
-            pool.put({ :type => :ayl, :code => code }.to_yaml)
+            pool.yput({ :type => :ayl, :code => code }, message.options.priority, message.options.delay, message.options.time_to_run)
           rescue Exception => ex
             logger.error "Error submitting message to beanstalk: #{ex}"
           end
@@ -40,14 +40,20 @@ module Ayl
 
       def process_messages
         logger.info "#{self.class.name} entering process_messages loop"
-        trap('TERM') { puts "## Got the term signal"; @stop = true }
-        trap('INT') { puts "## Got the int signal"; @stop = true }
+        # trap('TERM') { puts "## Got the term signal"; @stop = true }
+        # trap('INT') { puts "## Got the int signal"; @stop = true }
         pool.watch(Ayl::MessageOptions.default_queue_name)
         while true
           break if @stop
           job = pool.reserve
-          process_message(job)
-          job.delete
+          break if job.nil?
+          begin
+            process_message(job)
+          rescue Exception => ex
+            logger.error "#{self.class.name} Exception in process_messages: #{ex}"
+          ensure
+            job.delete
+          end
         end
       end
 
@@ -58,15 +64,13 @@ module Ayl
       end
 
       def process_message(job)
-        begin
-          h = YAML::load(job.body)
-          raise "Body of job expected to be a hash: #{job.body}" unless h.is_a?(Hash)
-          raise "Unknown type of job: #{h.inspect}" unless h[:type] == :ayl # Not our kind of job
-          raise "No code provided in job: #{job.body}" if h[:code].nil?
-          eval(h[:code])
-        rescue Exception => ex
-          logger.error "#{self.class.name} Exception in process_messages: #{ex}"
-        end
+        puts "Processing the job"
+        h = YAML::load(job.body)
+        raise "Body of job expected to be a hash: #{job.body}" unless h.is_a?(Hash)
+        raise "Unknown type of job: #{h.inspect}" unless h[:type] == :ayl # Not our kind of job
+        raise "No code provided in job: #{job.body}" if h[:code].nil?
+        eval(h[:code])
+        puts "Done processing the job"
       end
 
     end
