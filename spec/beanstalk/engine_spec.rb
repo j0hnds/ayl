@@ -53,7 +53,7 @@ describe Ayl::Beanstalk::Engine do
       it "should wait for a message to be received from beanstalk and process it" do
         mock_job = mock("Beanstalk::Job")
         mock_job.should_receive(:delete)
-        mock_job.should_receive(:body).and_return("---\n:type: :ayl\n:code: 23.to_s(2)\n")
+        mock_job.should_receive(:ybody).and_return({ :type => :ayl, :code => "23.to_s(2)" })
 
         mock_pool = mock("Beanstalk::Pool")
         mock_pool.should_receive(:watch).with("default")
@@ -62,6 +62,8 @@ describe Ayl::Beanstalk::Engine do
 
         ::Beanstalk::Pool.should_receive(:new).with([ "localhost:11300" ]).and_return(mock_pool)
 
+        @engine.should_receive(:eval).with("23.to_s(2)")
+
         @engine.process_messages
         
       end
@@ -69,7 +71,7 @@ describe Ayl::Beanstalk::Engine do
       it "should deal with an active-record exception on receipt of message" do
         mock_job = mock("Beanstalk::Job")
         mock_job.should_receive(:delete)
-        mock_job.should_receive(:body).and_return("---\n:type: :ayl\n:code: Dog\n")
+        mock_job.should_receive(:ybody).and_return({ :type => :ayl, :code => "Dog" })
 
         mock_pool = mock("Beanstalk::Pool")
         mock_pool.should_receive(:watch).with("default")

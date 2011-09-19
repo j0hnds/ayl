@@ -65,7 +65,7 @@ module Ayl
 
       def process_message(job)
         puts "Processing the job"
-        h = YAML::load(job.body)
+        h = job.ybody
         raise "Body of job expected to be a hash: #{job.body}" unless h.is_a?(Hash)
         raise "Unknown type of job: #{h.inspect}" unless h[:type] == :ayl # Not our kind of job
         raise "No code provided in job: #{job.body}" if h[:code].nil?
