@@ -49,10 +49,17 @@ module Ayl
           break if job.nil?
           begin
             process_message(job)
+            job.delete
+          rescue Ayl::Beanstalk::UnrecoverableJobException => ex
+            logger.error "#{self.class.name} Unrecoverable exception in process_messages: #{ex}"
+            job.delete
           rescue Exception => ex
             logger.error "#{self.class.name} Exception in process_messages: #{ex}"
-          ensure
-            job.delete
+            if job.age > 60
+              job.delete
+            else
+              job.decay
+            end
           end
         end
       end
@@ -66,9 +73,9 @@ module Ayl
       def process_message(job)
         puts "Processing the job"
         h = job.ybody
-        raise "Body of job expected to be a hash: #{job.body}" unless h.is_a?(Hash)
-        raise "Unknown type of job: #{h.inspect}" unless h[:type] == :ayl # Not our kind of job
-        raise "No code provided in job: #{job.body}" if h[:code].nil?
+        raise Ayl::Beanstalk::UnrecoverableJobException, "Body of job expected to be a hash: #{job.body}" unless h.is_a?(Hash)
+        raise Ayl::Beanstalk::UnrecoverableJobException, "Unknown type of job: #{h.inspect}" unless h[:type] == :ayl # Not our kind of job
+        raise Ayl::Beanstalk::UnrecoverableJobException, "No code provided in job: #{job.body}" if h[:code].nil?
         eval(h[:code])
         puts "Done processing the job"
       end
