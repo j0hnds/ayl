@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 require 'optparse'
-# require 'beanstalk-client'
 require 'rails'
 require 'ayl'
 
@@ -65,23 +64,10 @@ if options[:rails_app]
   require File.join(options[:app_path], 'config/environment')
 end
 
-
-# $: << options[:app_path]
-# Dir.chdir(options[:app_path])
-# $: << options[:app_path]
-
-# Now require the rails application
-# require File.join(options[:app_path], 'config/environment')
-# require 'config/environment'
-
 puts "### The Rails envionment: #{Rails.env}"
 
 Ayl::MessageOptions.default_queue_name = options[:tube]
 
 engine = Ayl::Engine.get_active_engine
-# engine = Ayl::Beanstalk::Engine.new(options[:host], options[:port])
 
 engine.process_messages
-
-# engine = Ayl::Engine.get_active_engine
-# engine.process_messages
