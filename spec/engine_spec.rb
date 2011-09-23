@@ -73,20 +73,12 @@ describe Ayl::Engine do
       Ayl::Logger.instance.logger = mock_logger
 
       mock_message = mock("Ayl::Message")
-      mock_message.should_receive(:to_rrepr).and_return('"a_string".length')
+
+      mock_worker = mock("Ayl::Worker")
+      mock_worker.should_receive(:process_message).with(mock_message).and_return(8)
+      Ayl::Worker.should_receive(:new).and_return(mock_worker)
 
       @default_engine.submit(mock_message).should == 8
-    end
-
-  end
-
-  context "Client-side behavior" do
-
-    it "should raise an exception if receive is called on an engine that is not asynchronous" do
-      # The default engine is not async
-      Ayl::Engine.clear_engines
-      engine = Ayl::Engine.get_active_engine
-      lambda { engine.process_messages }.should raise_error
     end
 
   end

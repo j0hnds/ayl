@@ -31,7 +31,7 @@ module Ayl
             pool.use(message.options.queue_name)
             code = message.to_rrepr
             logger.info "#{self.class.name} submitting '#{code}' to tube '#{message.options.queue_name}'"
-            pool.yput({ :type => :ayl, :code => code }, message.options.priority, message.options.delay, message.options.time_to_run)
+            pool.yput(message.to_hash, message.options.priority, message.options.delay, message.options.time_to_run)
           rescue Exception => ex
             logger.error "Error submitting message to beanstalk: #{ex}"
           end

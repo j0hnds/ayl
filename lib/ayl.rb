@@ -7,3 +7,4 @@ require 'ayl/railtie' if defined?(Rails)
 require 'ayl/beanstalk/engine'
 require 'ayl/beanstalk/unrecoverable_job_exception'
 require 'ayl/logger'
+require 'ayl/worker'

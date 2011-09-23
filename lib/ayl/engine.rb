@@ -37,16 +37,16 @@ module Ayl
 
     def submit(message)
       log_call(:submit) do
-        code = message.to_rrepr
-        logger.info code
-        eval(code) 
+        worker.process_message(message)
       end
     end
 
-    def process_messages
-      logger.error "Attempt to invoke #{self.class.name}.process_messages failed"
-      raise "asynchronous engine cannot receive messages" unless asynchronous?
+    private
+
+    def worker
+      @worker ||= Worker.new
     end
+
   end
 
 end
