@@ -44,6 +44,7 @@ module Ayl
 
       Message.new(object, selector, MessageOptions.new, *arguments).tap do | m |
         m.send(:message_hash=, message_hash)
+        m.send(:code=, code)
       end
       
     end
@@ -65,7 +66,7 @@ module Ayl
 
     private
     
-    attr_writer :message_hash
+    attr_writer :message_hash, :code
   end
 
 end
