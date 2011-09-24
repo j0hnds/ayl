@@ -24,7 +24,7 @@ module Ayl
         lparen_index = code.index('(')
         if lparen_index
           method_code = code[dot_index+1...lparen_index]
-          rparen_index = code.index(')')
+          rparen_index = code.rindex(')')
           if rparen_index
             argument_list = code[lparen_index+1...rparen_index].split(',')
             arguments = argument_list.collect { | arg | eval(arg) }

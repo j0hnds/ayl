@@ -80,6 +80,16 @@ describe Ayl::Message do
       m.to_hash.should === m_hash
     end
 
+    it "should be able to create a message from a hash with code that has one arguments with multiple parens" do
+      m_hash = { :type => :ayl, :code => "\"object\".method_name('string'.length())" }
+      m = Ayl::Message.from_hash(m_hash)
+      m.object.should == "object"
+      m.selector.should == :method_name
+      m.options.is_a?(Ayl::MessageOptions).should be_true
+      m.arguments.should == [6 ]
+      m.to_hash.should === m_hash
+    end
+
   end
 
   context "Code Evaluation" do
