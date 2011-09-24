@@ -12,8 +12,10 @@ module Ayl
     end
 
     def self.from_hash(message_hash)
-      raise "parameter must be a hash" unless message_hash.is_a?(Hash)
-      raise "not a valid message hash" if message_hash[:type] != :ayl || message_hash[:code].nil?
+      raise Ayl::UnrecoverableMessageException, "parameter must be a hash" unless message_hash.is_a?(Hash)
+      raise Ayl::UnrecoverableMessageException, "not a valid message hash" if message_hash[:type] != :ayl || message_hash[:code].nil?
+      raise Ayl::UnrecoverableMessageException, "No code provided in job: #{job.body}" if message_hash[:code].nil?
+
       code = message_hash[:code]
       dot_index = code.index('.')
       arguments = []

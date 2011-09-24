@@ -68,6 +68,6 @@ puts "### The Rails envionment: #{Rails.env}"
 
 Ayl::MessageOptions.default_queue_name = options[:tube]
 
-engine = Ayl::Engine.get_active_engine
+worker = Ayl::Engine.get_active_engine.worker
 
-engine.process_messages
+worker.process_messages
