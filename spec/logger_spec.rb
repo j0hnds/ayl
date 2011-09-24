@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe Ayl::Logger do
 
+  before(:each) do
+    Ayl::Logger.instance.logger = nil
+  end
+
   context "Logger Configuration" do
 
     it "should respond with nil if a logger isn't configured" do

@@ -5,6 +5,7 @@ describe Ayl::Worker do
   context "Messages Processing" do
 
     before(:each) do
+      Ayl::Logger.instance.logger = nil
       @worker = Ayl::Worker.new
     end
 
