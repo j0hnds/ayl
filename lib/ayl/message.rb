@@ -62,8 +62,9 @@ module Ayl
       }
     end
 
-    def evaluate
-      eval(to_rrepr)
+    def evaluate(top_binding)
+      code_to_eval = to_rrepr
+      eval(code_to_eval, top_binding, code_to_eval, 1)
     end
 
     private

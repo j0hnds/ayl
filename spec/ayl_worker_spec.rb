@@ -32,6 +32,7 @@ describe "ayl_worker script" do
 
       mock_worker = mock("Worker")
       mock_worker.should_receive(:process_messages)
+      mock_worker.should_receive(:eval_binding=)
 
       mock_active_engine = mock("ActiveEngine")
       mock_active_engine.should_receive(:worker).and_return(mock_worker)
@@ -48,6 +49,7 @@ describe "ayl_worker script" do
 
       mock_worker = mock("Worker")
       mock_worker.should_receive(:process_messages)
+      mock_worker.should_receive(:eval_binding=)
 
       mock_active_engine = mock("ActiveEngine")
       mock_active_engine.should_receive(:worker).and_return(mock_worker)
@@ -64,6 +66,7 @@ describe "ayl_worker script" do
 
       mock_worker = mock("Worker")
       mock_worker.should_receive(:process_messages)
+      mock_worker.should_receive(:eval_binding=)
 
       mock_active_engine = mock("ActiveEngine")
       mock_active_engine.should_receive(:worker).and_return(mock_worker)
@@ -81,6 +84,7 @@ describe "ayl_worker script" do
 
       mock_worker = mock("Worker")
       mock_worker.should_receive(:process_messages)
+      mock_worker.should_receive(:eval_binding=)
 
       mock_active_engine = mock("ActiveEngine")
       mock_active_engine.should_receive(:worker).and_return(mock_worker)

@@ -97,7 +97,7 @@ describe Ayl::Message do
     it "should evaluate the code associated with the message" do
       array_of_nums = [ 3, 2, 8, 1 ]
       m = Ayl::Message.new(array_of_nums, :length, Ayl::MessageOptions.new)
-      m.evaluate.should == 4
+      m.evaluate(binding).should == 4
     end
 
   end

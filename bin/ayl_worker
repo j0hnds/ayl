@@ -65,5 +65,6 @@ require File.join(options[:app_path], options[:app_require])
 Ayl::MessageOptions.default_queue_name = options[:tube]
 
 worker = Ayl::Engine.get_active_engine.worker
+worker.eval_binding = binding
 
 worker.process_messages
