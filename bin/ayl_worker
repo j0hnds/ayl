@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 require 'optparse'
-require 'ayl'
 
 BASE_EXIT_CODE = 64
 NO_APP_PATH_SPECIFIED = BASE_EXIT_CODE + 0

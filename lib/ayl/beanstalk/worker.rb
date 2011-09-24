@@ -29,7 +29,7 @@ module Ayl
             logger.error "#{self.class.name} Unrecoverable exception in process_messages: #{ex}"
             job.delete
           rescue Exception => ex
-            logger.error "#{self.class.name} Exception in process_messages: #{ex}"
+            logger.error "#{self.class.name} Exception in process_messages: #{ex}\n#{ex.backtrace.join("\n")}"
             if job.age > 60
               job.delete
             else

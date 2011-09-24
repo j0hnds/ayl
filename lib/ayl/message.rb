@@ -17,34 +17,8 @@ module Ayl
       raise Ayl::UnrecoverableMessageException, "No code provided in job: #{job.body}" if message_hash[:code].nil?
 
       code = message_hash[:code]
-      dot_index = code.index('.')
-      arguments = []
-      if dot_index
-        object_code = code[0...dot_index]
-        lparen_index = code.index('(')
-        if lparen_index
-          method_code = code[dot_index+1...lparen_index]
-          rparen_index = code.rindex(')')
-          if rparen_index
-            argument_list = code[lparen_index+1...rparen_index].split(',')
-            arguments = argument_list.collect { | arg | eval(arg) }
-          else
-            raise "malformed expression"
-          end
-        else
-          # No lparen, just eval the whole thing and set that
-          # as the selector
-          method_code = code[dot_index+1..-1]
-        end
-        selector = method_code.to_sym
-      else
-        # No dot; just eval the whole thing and set that as the
-        # object
-        object_code = code
-      end
-      object = eval(object_code)
 
-      Message.new(object, selector, MessageOptions.new, *arguments).tap do | m |
+      Message.new(nil, nil, MessageOptions.new).tap do | m |
         m.send(:message_hash=, message_hash)
         m.send(:code=, code)
       end
