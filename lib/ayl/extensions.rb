@@ -23,6 +23,8 @@ module Ayl
 
 end
 
+[ Array, Hash, Module, Numeric, Range, String, Symbol ].each { |c| c.send :include, Ayl::Extensions }
+
 class Symbol
   def to_rrepr() inspect end
 end

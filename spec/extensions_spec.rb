@@ -33,6 +33,13 @@ describe Ayl::Extensions do
       @cut.ayl_send_opts(:something, {}, "arg1", "arg2")
     end
 
+    it "should extend a common set up classes" do
+      [ Array, Hash, Module, Numeric, Range, String, Symbol ].each do |c|
+        c.should respond_to :ayl_send
+        c.should respond_to :ayl_send_opts
+      end
+    end
+
   end
 
 end
