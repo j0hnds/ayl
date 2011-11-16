@@ -10,6 +10,7 @@ describe Ayl::Worker do
     end
 
     it "should raise an exception if receive is called on an engine that is not asynchronous" do
+      Kernel.stub(:puts)
       lambda { @worker.process_messages }.should raise_error(RuntimeError, "synchronous worker cannot receive messages")
     end
 

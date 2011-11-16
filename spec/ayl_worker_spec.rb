@@ -11,11 +11,13 @@ describe "ayl_worker script" do
   context "handling command line" do
 
     it "requires that an application path be specified" do
+      Object.any_instance.stub(:puts)
       lambda { load(@ayl_script, true) }.should exit_with_code(64)
     end
 
     it "should exit with a status code of 0 if help is invoked" do
       ARGV << '--help'
+      Object.any_instance.stub(:puts)
       lambda { load(@ayl_script, true) }.should exit_with_code(0)
     end
 
