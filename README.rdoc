@@ -11,8 +11,48 @@ separate processing thread (maybe a thread, maybe a separate process, etc.).
 The actual implementation of the code that executes the methods has been abstracted away from the general
 framework. You can implement any "Engine" you like to provide the asynchronous functionality. A reference
 implementation of an engine using beanstalk ({beanstalkd}[http://kr.github.com/beanstalkd/], {beanstalk-client}[http://beanstalk.rubyforge.org/]) as a 
-as a queuing mechanism is provided to give you a leg up. If you decide to use a different mechanism, you
+as a queuing mechanism is provided to give you a leg up ({ayl-beanstalk}[https://github.com/j0hnds/ayl-beanstalk]). If you decide to use a different mechanism, you
 can simply provide an implementation of the Ayl::Engine interface (described below).
+
+There is also an extension to ayl to support Rails applications ({ayl-rails}[https://github.com/j0hnds/ayl-rails]).
+This is extension allows you to make certain ActiveRecord life-cycle callbacks asynchronous:
+
+* after_create => ayl_after_create
+* after_update => ayl_after_update
+* after_save => ayl_after_save
+
+The following is a sample of how easy it is write asynchronous code using ayl.
+
+Write a simple module to configure the async engine
+
+Define a method to be made asynchronous:
+
+    # Doesn't have to be a module method, can be a 
+    # class method, etc.
+    module AsyncModule
+      def self.method_to_run_async(name)
+        puts "Hello #{name} from AsyncModule
+      end
+    end
+
+Now, set up the async engine and make the asynchronous call:
+
+    require 'ayl'
+    require 'ayl-beanstalk' # Using beanstalk in this case
+
+    # Set up the engine you want to use. In this case use
+    # beanstalk (no argument constructor assumes the default
+    # beanstalk host/port).
+    Ayl::Engine.add_engine Ayl::Beanstalk::Engine.new
+
+    # Now make the call
+    AsyncModule.ayl_send(:method_to_run_async, "Joe")
+
+    # The script will immediately return and you can execute
+    # whatever code is necessary for your app
+    ...
+
+To run the method
 
 == Contributing to ayl
  
