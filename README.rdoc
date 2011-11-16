@@ -11,8 +11,9 @@ separate processing thread (maybe a thread, maybe a separate process, etc.).
 The actual implementation of the code that executes the methods has been abstracted away from the general
 framework. You can implement any "Engine" you like to provide the asynchronous functionality. A reference
 implementation of an engine using beanstalk ({beanstalkd}[http://kr.github.com/beanstalkd/], {beanstalk-client}[http://beanstalk.rubyforge.org/]) as a 
-as a queuing mechanism is provided to give you a leg up. If you decide to use a different mechanism, you
-can simply provide an implementation of the Ayl::Engine interface (described below).
+as a queuing mechanism is provided to give you a leg up {ayl-beanstalk}[https://github.com/j0hnds/ayl-beanstalk]. If you decide to use a different mechanism, you
+can simply provide an implementation of the Ayl::Engine interface (described below). If you would like to leverage asynchronous processes in your rails application, take 
+a look at {ayl-rails}[https://github.com/j0hnds/ayl-rails]; it provides the ability to asynchronize ActiveRecord callbacks (e.g. after_save, after_update, etc.).
 
 == Contributing to ayl
  
