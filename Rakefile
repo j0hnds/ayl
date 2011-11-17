@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "ayl"
   gem.homepage = "http://github.com/j0hnds/ayl"
   gem.license = "MIT"
-  gem.summary = %Q{Invoke code at your leisure}
-  gem.description = %Q{Invoke code at your leisure}
+  gem.summary = %Q{Invoke code At Your Leisure}
+  gem.description = %Q{Invoke code At Your Leisure. ayl is a small framework that simplifies the process of implementing asynchronous method calls in Ruby.}
   gem.email = "j0hnds@gmail.com"
   gem.authors = ["Dave Sieh"]
   # dependencies defined in Gemfile
