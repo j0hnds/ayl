@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "ayl"
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dave Sieh"]
-  s.date = "2011-11-20"
+  s.date = "2013-02-25"
   s.description = "Invoke code At Your Leisure. ayl is a small framework that simplifies the process of implementing asynchronous method calls in Ruby."
   s.email = "j0hnds@gmail.com"
   s.extra_rdoc_files = [
@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
+    "ayl.gemspec",
     "lib/ayl.rb",
     "lib/ayl/engine.rb",
     "lib/ayl/extensions.rb",
@@ -45,7 +46,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/j0hnds/ayl"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.10"
+  s.rubygems_version = "1.8.23"
   s.summary = "Invoke code At Your Leisure"
 
   if s.respond_to? :specification_version then
