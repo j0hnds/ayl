@@ -2,6 +2,16 @@ require 'spec_helper'
 
 describe Ayl::Message do
 
+  before(:each) do
+    # Need to reset the default message options each time
+    Ayl::MessageOptions.default_priority = 512
+    Ayl::MessageOptions.default_fuzz = 0
+    Ayl::MessageOptions.default_delay = 0
+    Ayl::MessageOptions.default_time_to_run = 120
+    Ayl::MessageOptions.default_queue_name = 'default'
+    Ayl::MessageOptions.default_decay_failed_job = false
+  end
+
   context "Initialization" do
 
     it "should accept an object, selector options and a set of arguments" do
@@ -47,7 +57,14 @@ describe Ayl::Message do
     it "should package up the message into a hash" do
       options = Ayl::MessageOptions.new
       m = Ayl::Message.new("object", :method_name, options, "arg1", "arg2")
-      m.to_hash.should == { :type => :ayl, :code => "\"object\".method_name(\"arg1\", \"arg2\")" }
+      m.to_hash.should == { :type => :ayl, :decay_failed_job => false, :code => "\"object\".method_name(\"arg1\", \"arg2\")" }
+    end
+
+    it "should package up the message into a hash when the decay failed job has been set" do
+      options = Ayl::MessageOptions.new
+      options.decay_failed_job = true
+      m = Ayl::Message.new("object", :method_name, options, "arg1", "arg2")
+      m.to_hash.should == { :type => :ayl, :decay_failed_job => true, :code => "\"object\".method_name(\"arg1\", \"arg2\")" }
     end
 
     it "should be able to create a message from a hash with code that has arguments" do
@@ -84,6 +101,30 @@ describe Ayl::Message do
       m = Ayl::Message.from_hash(m_hash)
       m.options.is_a?(Ayl::MessageOptions).should be_true
       m.to_hash.should === m_hash
+    end
+
+    it "should create a message with decay_failed job set to false if not in the original hash" do
+      m_hash = { :type => :ayl, :code => "String._ayl_after_create(2.to_s(2))" }
+      m = Ayl::Message.from_hash(m_hash)
+      m.options.is_a?(Ayl::MessageOptions).should be_true
+      m.to_hash.should === m_hash
+      m.options.decay_failed_job.should be_false
+    end
+
+    it "should create a message with decay_failed job set to false if in the original hash as false" do
+      m_hash = { :type => :ayl, :decay_failed_job => false, :code => "String._ayl_after_create(2.to_s(2))" }
+      m = Ayl::Message.from_hash(m_hash)
+      m.options.is_a?(Ayl::MessageOptions).should be_true
+      m.to_hash.should === m_hash
+      m.options.decay_failed_job.should be_false
+    end
+
+    it "should create a message with decay_failed job set to true if in the original hash as true" do
+      m_hash = { :type => :ayl, :decay_failed_job => true, :code => "String._ayl_after_create(2.to_s(2))" }
+      m = Ayl::Message.from_hash(m_hash)
+      m.options.is_a?(Ayl::MessageOptions).should be_true
+      m.to_hash.should === m_hash
+      m.options.decay_failed_job.should be_true
     end
 
 
