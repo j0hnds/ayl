@@ -21,6 +21,7 @@ module Ayl
       Message.new(nil, nil, MessageOptions.new).tap do | m |
         m.send(:message_hash=, message_hash)
         m.send(:code=, code)
+        m.options.decay_failed_job = message_hash[:decay_failed_job] if message_hash[:decay_failed_job]
       end
       
     end
@@ -32,6 +33,7 @@ module Ayl
     def to_hash
       @message_hash ||= {
         :type => :ayl,
+        :decay_failed_job => options.decay_failed_job,
         :code => to_rrepr
       }
     end

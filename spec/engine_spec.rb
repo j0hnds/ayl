@@ -68,7 +68,7 @@ describe Ayl::Engine do
 
     it "should simply execute the code provided in the message submission" do
       mock_logger = mock("Ayl::Logger")
-      mock_logger.stub(:info)
+      mock_logger.stub(:debug)
       
       Ayl::Logger.instance.logger = mock_logger
 
