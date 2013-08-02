@@ -10,7 +10,7 @@ describe Ayl::MessageOptions do
       Ayl::MessageOptions.default_delay.should == 0
       Ayl::MessageOptions.default_time_to_run.should == 120
       Ayl::MessageOptions.default_queue_name.should == 'default'
-      Ayl::MessageOptions.default_decay_failed_job.should == false
+      Ayl::MessageOptions.default_failed_job_handler.should == 'delete'
     end
 
     it "should reflect the changes if changes have been made" do
@@ -19,14 +19,14 @@ describe Ayl::MessageOptions do
       Ayl::MessageOptions.default_delay = 2300
       Ayl::MessageOptions.default_time_to_run = 1
       Ayl::MessageOptions.default_queue_name = 'different'
-      Ayl::MessageOptions.default_decay_failed_job = true
+      Ayl::MessageOptions.default_failed_job_handler = 'bury'
 
       Ayl::MessageOptions.default_priority.should == 256
       Ayl::MessageOptions.default_fuzz.should == 18
       Ayl::MessageOptions.default_delay.should == 2300
       Ayl::MessageOptions.default_time_to_run.should == 1
       Ayl::MessageOptions.default_queue_name.should == 'different'
-      Ayl::MessageOptions.default_decay_failed_job.should == true
+      Ayl::MessageOptions.default_failed_job_handler.should == 'bury'
     end
 
   end
@@ -41,7 +41,7 @@ describe Ayl::MessageOptions do
       mo.delay.should == Ayl::MessageOptions.default_delay
       mo.time_to_run.should == Ayl::MessageOptions.default_time_to_run
       mo.queue_name.should == Ayl::MessageOptions.default_queue_name
-      mo.decay_failed_job.should == Ayl::MessageOptions.default_decay_failed_job
+      mo.failed_job_handler.should == Ayl::MessageOptions.default_failed_job_handler
     end
 
     it "should respond with the correct defaults when initialized with nil" do
@@ -52,7 +52,7 @@ describe Ayl::MessageOptions do
       mo.delay.should == Ayl::MessageOptions.default_delay
       mo.time_to_run.should == Ayl::MessageOptions.default_time_to_run
       mo.queue_name.should == Ayl::MessageOptions.default_queue_name
-      mo.decay_failed_job.should == Ayl::MessageOptions.default_decay_failed_job
+      mo.failed_job_handler.should == Ayl::MessageOptions.default_failed_job_handler
     end
 
     it "should respond with the correct defaults when initialized with no parameter" do
@@ -63,11 +63,11 @@ describe Ayl::MessageOptions do
       mo.delay.should == Ayl::MessageOptions.default_delay
       mo.time_to_run.should == Ayl::MessageOptions.default_time_to_run
       mo.queue_name.should == Ayl::MessageOptions.default_queue_name
-      mo.decay_failed_job.should == Ayl::MessageOptions.default_decay_failed_job
+      mo.failed_job_handler.should == Ayl::MessageOptions.default_failed_job_handler
     end
 
     it "should respond with the correct values when all are specified in the options" do
-      opts = { :priority => 22, :fuzz => 88, :delay => 99, :time_to_run => 11, :queue_name => 'stub', :decay_failed_job => true }
+      opts = { :priority => 22, :fuzz => 88, :delay => 99, :time_to_run => 11, :queue_name => 'stub', :failed_job_handler => 'decay' }
       mo = Ayl::MessageOptions.new(opts)
 
       mo.priority.should == opts[:priority]
@@ -75,7 +75,7 @@ describe Ayl::MessageOptions do
       mo.delay.should == opts[:delay]
       mo.time_to_run.should == opts[:time_to_run]
       mo.queue_name.should == opts[:queue_name]
-      mo.decay_failed_job.should == opts[:decay_failed_job]
+      mo.failed_job_handler.should == opts[:failed_job_handler]
     end
 
     it "should respond with the correct values when some values are specified in the options" do
@@ -87,7 +87,7 @@ describe Ayl::MessageOptions do
       mo.delay.should == opts[:delay]
       mo.time_to_run.should == Ayl::MessageOptions.default_time_to_run
       mo.queue_name.should == Ayl::MessageOptions.default_queue_name
-      mo.decay_failed_job.should == Ayl::MessageOptions.default_decay_failed_job
+      mo.failed_job_handler.should == Ayl::MessageOptions.default_failed_job_handler
     end
 
     it "should raise an exception when an invalid option is provided in the hash" do
