@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "ayl"
-  s.version = "0.2.1"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dave Sieh"]
-  s.date = "2013-07-22"
+  s.date = "2013-08-07"
   s.description = "Invoke code At Your Leisure. ayl is a small framework that simplifies the process of implementing asynchronous method calls in Ruby."
   s.email = "j0hnds@gmail.com"
   s.extra_rdoc_files = [
