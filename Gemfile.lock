@@ -16,7 +16,6 @@ GEM
       ruby_parser (>= 2.3.1)
       slop (~> 2.1.0)
     rake (0.9.2.2)
-    rcov (0.9.11)
     rspec (2.7.0)
       rspec-core (~> 2.7.0)
       rspec-expectations (~> 2.7.0)
@@ -37,5 +36,4 @@ DEPENDENCIES
   bundler (>= 1.0.0)
   jeweler (>= 1.6.4)
   pry
-  rcov
   rspec (>= 2.3.0)
