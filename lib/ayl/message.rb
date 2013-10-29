@@ -4,11 +4,19 @@ module Ayl
 
     attr_accessor :object, :selector, :options, :arguments
 
+    # Don't want anyone else constructing a message object
+    # other than the class methods
+    private_class_method :new
+
     def initialize(object, selector, opts, *args)
       @object = object
       @selector = selector
       @options = opts
       @arguments = args
+    end
+
+    def self.from_object_selector(object, selector, opts, *args)
+      Message.send(:new, object, selector, opts, *args)
     end
 
     def self.from_hash(message_hash)
@@ -18,7 +26,7 @@ module Ayl
 
       code = message_hash[:code]
 
-      Message.new(nil, nil, MessageOptions.new).tap do | m |
+      Message.send(:new, nil, nil, MessageOptions.new).tap do | m |
         m.send(:message_hash=, message_hash)
         m.send(:code=, code)
         m.options.failed_job_handler = message_hash[:failed_job_handler] if message_hash[:failed_job_handler]
@@ -46,6 +54,7 @@ module Ayl
     private
     
     attr_writer :message_hash, :code
+
   end
 
 end
