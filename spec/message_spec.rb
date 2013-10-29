@@ -12,6 +12,10 @@ describe Ayl::Message do
     Ayl::MessageOptions.default_failed_job_handler = 'decay'
   end
 
+  after(:each) do
+    Ayl::MessageOptions.default_failed_job_handler = 'delete'
+  end
+
   context "Initialization" do
 
     it "should accept an object, selector options and a set of arguments" do
