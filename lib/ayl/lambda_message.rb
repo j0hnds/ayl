@@ -26,6 +26,10 @@ module Ayl
       the_lambda.call *(args_converted ? arguments : arguments.map { | arg | eval(arg) })
     end
 
+    def to_rrepr
+      code
+    end
+
     private 
 
     attr_writer :args_converted
