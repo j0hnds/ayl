@@ -1,6 +1,8 @@
 require 'ayl/logging'
 require 'ayl/extensions'
 require 'ayl/message'
+require 'ayl/object_selector_message'
+require 'ayl/lambda_message'
 require 'ayl/engine'
 require 'ayl/message_options'
 require 'ayl/unrecoverable_message_exception'

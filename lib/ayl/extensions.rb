@@ -8,10 +8,10 @@ module Ayl
 
     def ayl_send_opts(selector, opts, *args)
       engine = Ayl::Engine.get_active_engine
-      message = Message.from_object_selector(self, 
-                                             selector, 
-                                             MessageOptions.new(opts), 
-                                             *args)
+      message = ObjectSelectorMessage.new(self, 
+                                          selector, 
+                                          MessageOptions.new(opts), 
+                                          *args)
       engine.submit(message)
     end
 

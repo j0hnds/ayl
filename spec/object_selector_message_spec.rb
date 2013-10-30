@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Ayl::Message do
+describe Ayl::ObjectSelectorMessage do
 
   before(:each) do
     # Need to reset the default message options each time
@@ -20,10 +20,10 @@ describe Ayl::Message do
 
     it "should accept an object, selector options and a set of arguments" do
       options = Ayl::MessageOptions.new
-      m = Ayl::Message.from_object_selector("object", 
-                                            :method_name, 
-                                            options, 
-                                            "arg1", "arg2")
+      m = Ayl::ObjectSelectorMessage.new("object", 
+                                         :method_name, 
+                                         options, 
+                                         "arg1", "arg2")
       
       m.object.should == "object"
       m.selector.should == :method_name
@@ -33,7 +33,7 @@ describe Ayl::Message do
 
     it "should accept an object, selector options and no arguments" do
       options = Ayl::MessageOptions.new
-      m = Ayl::Message.from_object_selector("object", :method_name, options)
+      m = Ayl::ObjectSelectorMessage.new("object", :method_name, options)
       
       m.object.should == "object"
       m.selector.should == :method_name
@@ -47,17 +47,17 @@ describe Ayl::Message do
     
     it "should generate code when arguments are present" do
       options = Ayl::MessageOptions.new
-      m = Ayl::Message.from_object_selector("object", 
-                                            :method_name, 
-                                            options, 
-                                            "arg1", 
-                                            "arg2")
+      m = Ayl::ObjectSelectorMessage.new("object", 
+                                         :method_name, 
+                                         options, 
+                                         "arg1", 
+                                         "arg2")
       m.to_rrepr.should == "\"object\".method_name(\"arg1\", \"arg2\")"
     end
 
     it "should generate code when no arguments are present" do
       options = Ayl::MessageOptions.new
-      m = Ayl::Message.from_object_selector("object", :method_name, options)
+      m = Ayl::ObjectSelectorMessage.new("object", :method_name, options)
       m.to_rrepr.should == "\"object\".method_name()"
     end
 
@@ -67,11 +67,11 @@ describe Ayl::Message do
     
     it "should package up the message into a hash" do
       options = Ayl::MessageOptions.new
-      m = Ayl::Message.from_object_selector("object", 
-                                            :method_name, 
-                                            options, 
-                                            "arg1", 
-                                            "arg2")
+      m = Ayl::ObjectSelectorMessage.new("object", 
+                                         :method_name, 
+                                         options, 
+                                         "arg1", 
+                                         "arg2")
       m.to_hash.should == { 
         :type => :ayl, 
         :failed_job_handler => 'decay', 
@@ -81,11 +81,11 @@ describe Ayl::Message do
     it "should package up the message into a hash when the decay failed job has been set" do
       options = Ayl::MessageOptions.new
       options.failed_job_handler = 'decay'
-      m = Ayl::Message.from_object_selector("object", 
-                                            :method_name, 
-                                            options, 
-                                            "arg1", 
-                                            "arg2")
+      m = Ayl::ObjectSelectorMessage.new("object", 
+                                         :method_name, 
+                                         options, 
+                                         "arg1", 
+                                         "arg2")
       m.to_hash.should == { 
         :type => :ayl, 
         :failed_job_handler => 'decay', 
@@ -97,6 +97,7 @@ describe Ayl::Message do
         :type => :ayl, 
         :code => "\"object\".method_name(\"arg1\", \"arg2\")" }
       m = Ayl::Message.from_hash(m_hash)
+      m.is_a?(Ayl::ObjectSelectorMessage).should be_true
       m.options.is_a?(Ayl::MessageOptions).should be_true
       m.to_hash.should === m_hash
     end
@@ -106,6 +107,7 @@ describe Ayl::Message do
         :type => :ayl, 
         :code => "\"object\".method_name()" }
       m = Ayl::Message.from_hash(m_hash)
+      m.is_a?(Ayl::ObjectSelectorMessage).should be_true
       m.options.is_a?(Ayl::MessageOptions).should be_true
       m.to_hash.should === m_hash
     end
@@ -115,6 +117,7 @@ describe Ayl::Message do
         :type => :ayl, 
         :code => "\"object\".method_name" }
       m = Ayl::Message.from_hash(m_hash)
+      m.is_a?(Ayl::ObjectSelectorMessage).should be_true
       m.options.is_a?(Ayl::MessageOptions).should be_true
       m.to_hash.should === m_hash
     end
@@ -124,6 +127,7 @@ describe Ayl::Message do
         :type => :ayl, 
         :code => "\"object\".method_name('string'.length())" }
       m = Ayl::Message.from_hash(m_hash)
+      m.is_a?(Ayl::ObjectSelectorMessage).should be_true
       m.options.is_a?(Ayl::MessageOptions).should be_true
       m.to_hash.should === m_hash
     end
@@ -134,6 +138,7 @@ describe Ayl::Message do
         :type => :ayl, 
         :code => "String._ayl_after_create(2.to_s(2))" }
       m = Ayl::Message.from_hash(m_hash)
+      m.is_a?(Ayl::ObjectSelectorMessage).should be_true
       m.options.is_a?(Ayl::MessageOptions).should be_true
       m.to_hash.should === m_hash
     end
@@ -144,6 +149,7 @@ describe Ayl::Message do
         :type => :ayl, 
         :code => "String._ayl_after_create(2.to_s(2))" }
       m = Ayl::Message.from_hash(m_hash)
+      m.is_a?(Ayl::ObjectSelectorMessage).should be_true
       m.options.is_a?(Ayl::MessageOptions).should be_true
       m.to_hash.should === m_hash
       m.options.failed_job_handler.should == 'delete'
@@ -155,6 +161,7 @@ describe Ayl::Message do
         :failed_job_handler => 'delete', 
         :code => "String._ayl_after_create(2.to_s(2))" }
       m = Ayl::Message.from_hash(m_hash)
+      m.is_a?(Ayl::ObjectSelectorMessage).should be_true
       m.options.is_a?(Ayl::MessageOptions).should be_true
       m.to_hash.should === m_hash
       m.options.failed_job_handler.should == 'delete'
@@ -166,6 +173,7 @@ describe Ayl::Message do
         :failed_job_handler => 'decay',
         :code => "String._ayl_after_create(2.to_s(2))" }
       m = Ayl::Message.from_hash(m_hash)
+      m.is_a?(Ayl::ObjectSelectorMessage).should be_true
       m.options.is_a?(Ayl::MessageOptions).should be_true
       m.to_hash.should === m_hash
       m.options.failed_job_handler.should == 'decay'
@@ -178,9 +186,9 @@ describe Ayl::Message do
     
     it "should evaluate the code associated with the message" do
       array_of_nums = [ 3, 2, 8, 1 ]
-      m = Ayl::Message.from_object_selector(array_of_nums, 
-                                            :length, 
-                                            Ayl::MessageOptions.new)
+      m = Ayl::ObjectSelectorMessage.new(array_of_nums, 
+                                         :length, 
+                                         Ayl::MessageOptions.new)
       m.evaluate(binding).should == 4
     end
 
