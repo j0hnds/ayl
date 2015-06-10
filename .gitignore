@@ -52,3 +52,10 @@ pkg
 
 # For Emacs
 .emacs_project
+
+# RVM
+.ruby-gemset
+.ruby-version
+
+# vim
+*.swp

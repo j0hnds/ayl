@@ -13,30 +13,30 @@ describe Ayl::Extensions do
     end
 
     it "should delegate the call to ayl_send to ayl_send_opts" do
-      @cut.should_receive(:ayl_send_opts).with(:something, {}, "arg1", "arg2")
+      expect(@cut).to receive(:ayl_send_opts).with(:something, {}, "arg1", "arg2")
       @cut.ayl_send(:something, "arg1", "arg2")
     end
 
     it "should have the message submit the call from ayl_send_opts" do
-      mock_engine = mock("Ayl::Engine")
+      mock_engine = double("Ayl::Engine")
 
-      Ayl::Engine.should_receive(:get_active_engine).and_return(mock_engine)
+      expect(Ayl::Engine).to receive(:get_active_engine).and_return(mock_engine)
       
-      mock_message_opts = mock("Ayl::MessageOptions")
-      Ayl::MessageOptions.should_receive(:new).with({}).and_return(mock_message_opts)
+      mock_message_opts = double("Ayl::MessageOptions")
+      expect(Ayl::MessageOptions).to receive(:new).with({}).and_return(mock_message_opts)
       
-      mock_message = mock("Ayl::Message")
+      mock_message = double("Ayl::Message")
 
-      Ayl::Message.should_receive(:new).with(@cut, :something, mock_message_opts, "arg1", "arg2").and_return(mock_message)
-      mock_engine.should_receive(:submit).with(mock_message)
+      expect(Ayl::Message).to receive(:new).with(@cut, :something, mock_message_opts, "arg1", "arg2").and_return(mock_message)
+      expect(mock_engine).to receive(:submit).with(mock_message)
 
       @cut.ayl_send_opts(:something, {}, "arg1", "arg2")
     end
 
     it "should extend a common set up classes" do
       [ Array, Hash, Module, Numeric, Range, String, Symbol ].each do |c|
-        c.should respond_to :ayl_send
-        c.should respond_to :ayl_send_opts
+        expect(c).to respond_to :ayl_send
+        expect(c).to respond_to :ayl_send_opts
       end
     end
 

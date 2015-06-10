@@ -6,12 +6,11 @@ source "http://rubygems.org"
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.
 group :development do
-  gem "rspec", ">= 2.3.0"
-  gem "bundler", ">= 1.0.0"
-  gem "jeweler", ">= 1.6.4"
-  gem 'pry'
+  gem "rspec", "~> 2.14"
+  gem "bundler", "~> 1.10"
+  gem "jeweler", "~> 2.0"
 end
 
-group :test do
-  gem 'pry'
+group :test, :development do
+  gem 'pry', "~> 0.9"
 end

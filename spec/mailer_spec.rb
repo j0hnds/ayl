@@ -8,22 +8,23 @@ describe Ayl::Mailer do
 
   context 'Mailer configuration' do
 
-    context "#logger" do
+    context "#deliver_message" do
 
       it "should respond with nil if a mailer isn't configured" do
-        Ayl::Mailer.instance.mailer.should be_nil
+        expect(Ayl::Mailer.instance.mailer).to be_nil
       end
 
       it "should raise an error if an attempt is made to configure the mailer with an invalid object" do
-        lambda { Ayl::Mailer.instance.mailer = Object.new }.should raise_error
+        expect { Ayl::Mailer.instance.mailer = Object.new }.to raise_error
       end
 
       it "should allow a valid mailer to be configured" do
-        mock_mailer = mock("MyMailer")
+        mock_mailer = double("MyMailer")
         mock_mailer.stub(:ayl_message)
+        mock_mailer.stub(:burying_job)
 
-        lambda { Ayl::Mailer.instance.mailer = mock_mailer }.should_not raise_error
-        Ayl::Mailer.instance.mailer.should == mock_mailer
+        expect { Ayl::Mailer.instance.mailer = mock_mailer }.not_to raise_error
+        expect(Ayl::Mailer.instance.mailer).to be mock_mailer
       end
 
     end
@@ -39,12 +40,11 @@ describe Ayl::Mailer do
       end
 
       it "should deliver a message and no stack trace if a valid mailer is configured" do
-        mock_mailer = mock("MyMailer")
-        mock_mailer.should_receive(:ayl_message).with('The Message', nil).and_return do
-          mock("MailMessage").tap do | mail_message |
-            mail_message.should_receive(:deliver)
-          end
-        end
+        mock_mailer = double("MyMailer")
+        mock_message = double("MailMessage")
+        expect(mock_message).to receive(:deliver)
+        expect(mock_mailer).to receive(:ayl_message).with('The Message', nil).and_return(mock_message)
+        mock_mailer.stub(:burying_job)
 
         Ayl::Mailer.instance.mailer = mock_mailer
 
@@ -52,18 +52,32 @@ describe Ayl::Mailer do
       end
 
       it "should deliver a message and a stack trace if a valid mailer is configured" do
-        mock_mailer = mock("MyMailer")
-        mock_mailer.should_receive(:ayl_message).with('The Message', 'StackTrace').and_return do
-          mock("MailMessage").tap do | mail_message |
-            mail_message.should_receive(:deliver)
-          end
-        end
+        mock_mailer = double("MyMailer")
+        mock_message = double("MailMessage")
+        expect(mock_message).to receive(:deliver)
+        expect(mock_mailer).to receive(:ayl_message).with('The Message', 'StackTrace').and_return(mock_message)
+        mock_mailer.stub(:burying_job)
 
         Ayl::Mailer.instance.mailer = mock_mailer
 
         Ayl::Mailer.instance.deliver_message('The Message', 'StackTrace')
       end
 
+    end
+
+    context '#burying_job' do
+
+      it "should deliver a message if a valid mailer is configured" do
+        mock_mailer = double("MyMailer")
+        mock_message = double("MailMessage")
+        expect(mock_message).to receive(:deliver)
+        expect(mock_mailer).to receive(:burying_job).with('1 + 2').and_return(mock_message)
+        mock_mailer.stub(:ayl_message)
+
+        Ayl::Mailer.instance.mailer = mock_mailer
+
+        Ayl::Mailer.instance.burying_job('1 + 2')
+      end
     end
 
   end

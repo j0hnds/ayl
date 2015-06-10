@@ -3,6 +3,7 @@ module Ayl
   class Message
 
     attr_accessor :object, :selector, :options, :arguments
+    attr_reader :code
 
     def initialize(object, selector, opts, *args)
       @object = object
@@ -22,6 +23,8 @@ module Ayl
         m.send(:message_hash=, message_hash)
         m.send(:code=, code)
         m.options.failed_job_handler = message_hash[:failed_job_handler] if message_hash[:failed_job_handler]
+        m.options.failed_job_count = message_hash[:failed_job_count] if message_hash[:failed_job_handler] == 'decay' && message_hash[:failed_job_count]
+        m.options.failed_job_delay = message_hash[:failed_job_delay] if message_hash[:failed_job_handler] == 'decay' && message_hash[:failed_job_delay]
       end
       
     end
@@ -31,11 +34,20 @@ module Ayl
     end
 
     def to_hash
-      @message_hash ||= {
+      @message_hash ||= new_message_hash
+    end
+
+    def new_message_hash
+      {
         :type => :ayl,
         :failed_job_handler => options.failed_job_handler,
         :code => to_rrepr
-      }
+      }.tap do | h |
+        if options.failed_job_handler == 'decay'
+          h[:failed_job_count] = options.failed_job_count
+          h[:failed_job_delay] = options.failed_job_delay
+        end
+      end
     end
 
     def evaluate(top_binding)
