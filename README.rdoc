@@ -13,7 +13,7 @@ been abstracted away from the general framework. You can implement any
 "Engine" you like to provide the asynchronous functionality. A
 reference implementation of an engine using beanstalk
 ({beanstalkd}[http://kr.github.com/beanstalkd/],
-{beanstalk-client}[http://beanstalk.rubyforge.org/]) as a queuing
+{beaneater}[https://github.com/beanstalkd/beaneater]) as a queuing
 mechanism is provided to give you a leg up:
 {ayl-beanstalk}[https://github.com/j0hnds/ayl-beanstalk]. If you
 decide to use a different mechanism, you can simply provide an
@@ -39,6 +39,6 @@ See the {wiki}[https://github.com/j0hnds/ayl/wiki/ayl-Home] for more detailed do
 
 == Copyright
 
-Copyright (c) 2011 j0hnds@gmail.com. See LICENSE.txt for
+Copyright (c) 2011-2015 j0hnds@gmail.com. See LICENSE.txt for
 further details.
 
