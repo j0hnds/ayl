@@ -43,7 +43,9 @@ describe Ayl::Mailer do
         mock_mailer = double("MyMailer")
         mock_message = double("MailMessage")
         expect(mock_message).to receive(:deliver)
-        expect(mock_mailer).to receive(:ayl_message).with('The Message', nil).and_return(mock_message)
+        expect(mock_mailer).to receive(:ayl_message).
+          with('The Message', nil).
+          and_return(mock_message)
         mock_mailer.stub(:burying_job)
 
         Ayl::Mailer.instance.mailer = mock_mailer
@@ -55,7 +57,9 @@ describe Ayl::Mailer do
         mock_mailer = double("MyMailer")
         mock_message = double("MailMessage")
         expect(mock_message).to receive(:deliver)
-        expect(mock_mailer).to receive(:ayl_message).with('The Message', 'StackTrace').and_return(mock_message)
+        expect(mock_mailer).to receive(:ayl_message).
+          with('The Message', 'StackTrace').
+          and_return(mock_message)
         mock_mailer.stub(:burying_job)
 
         Ayl::Mailer.instance.mailer = mock_mailer
@@ -71,7 +75,9 @@ describe Ayl::Mailer do
         mock_mailer = double("MyMailer")
         mock_message = double("MailMessage")
         expect(mock_message).to receive(:deliver)
-        expect(mock_mailer).to receive(:burying_job).with('1 + 2').and_return(mock_message)
+        expect(mock_mailer).to receive(:burying_job).
+          with('1 + 2').
+          and_return(mock_message)
         mock_mailer.stub(:ayl_message)
 
         Ayl::Mailer.instance.mailer = mock_mailer

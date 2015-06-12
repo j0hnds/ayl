@@ -27,7 +27,9 @@ describe Ayl::Extensions do
       
       mock_message = double("Ayl::Message")
 
-      expect(Ayl::Message).to receive(:new).with(@cut, :something, mock_message_opts, "arg1", "arg2").and_return(mock_message)
+      expect(Ayl::Message).to receive(:new).
+        with(@cut, :something, mock_message_opts, "arg1", "arg2").
+        and_return(mock_message)
       expect(mock_engine).to receive(:submit).with(mock_message)
 
       @cut.ayl_send_opts(:something, {}, "arg1", "arg2")

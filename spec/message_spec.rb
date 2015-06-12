@@ -76,28 +76,28 @@ describe Ayl::Message do
     end
 
     it "should be able to create a message from a hash with code that has arguments" do
-      m_hash = { :type => :ayl, :code => "\"object\".method_name(\"arg1\", \"arg2\")" }
+      m_hash = { 'type' => 'ayl', 'code' => "\"object\".method_name(\"arg1\", \"arg2\")" }
       m = Ayl::Message.from_hash(m_hash)
       expect(m.options.is_a?(Ayl::MessageOptions)).to be true
       expect(m.to_hash).to eq m_hash
     end
 
     it "should be able to create a message from a hash with code that has no arguments" do
-      m_hash = { :type => :ayl, :code => "\"object\".method_name()" }
+      m_hash = { 'type' => 'ayl', 'code' => "\"object\".method_name()" }
       m = Ayl::Message.from_hash(m_hash)
       expect(m.options.is_a?(Ayl::MessageOptions)).to be true
       expect(m.to_hash).to eq m_hash
     end
 
     it "should be able to create a message from a hash with code that has no arguments and no parens" do
-      m_hash = { :type => :ayl, :code => "\"object\".method_name" }
+      m_hash = { 'type' => 'ayl', 'code' => "\"object\".method_name" }
       m = Ayl::Message.from_hash(m_hash)
       expect(m.options.is_a?(Ayl::MessageOptions)).to be true
       expect(m.to_hash).to eq m_hash
     end
 
     it "should be able to create a message from a hash with code that has one arguments with multiple parens" do
-      m_hash = { :type => :ayl, :code => "\"object\".method_name('string'.length())" }
+      m_hash = { 'type' => 'ayl', 'code' => "\"object\".method_name('string'.length())" }
       m = Ayl::Message.from_hash(m_hash)
       expect(m.options.is_a?(Ayl::MessageOptions)).to be true
       expect(m.to_hash).to be m_hash
@@ -105,7 +105,7 @@ describe Ayl::Message do
 
     # Sample._ayl_after_create(Sample.find(106))
     it "should be able to create a message from a hash with code that has one arguments with multiple parens" do
-      m_hash = { :type => :ayl, :code => "String._ayl_after_create(2.to_s(2))" }
+      m_hash = { 'type' => 'ayl', 'code' => "String._ayl_after_create(2.to_s(2))" }
       m = Ayl::Message.from_hash(m_hash)
       expect(m.options.is_a?(Ayl::MessageOptions)).to be true
       expect(m.to_hash).to be m_hash
@@ -113,7 +113,7 @@ describe Ayl::Message do
 
     it "should create a message with decay_failed job set to false if not in the original hash" do
       Ayl::MessageOptions.default_failed_job_handler = 'delete'
-      m_hash = { :type => :ayl, :code => "String._ayl_after_create(2.to_s(2))" }
+      m_hash = { 'type' => 'ayl', 'code' => "String._ayl_after_create(2.to_s(2))" }
       m = Ayl::Message.from_hash(m_hash)
       expect(m.options.is_a?(Ayl::MessageOptions)).to be true
       expect(m.to_hash).to be m_hash
@@ -121,7 +121,7 @@ describe Ayl::Message do
     end
 
     it "should create a message with decay_failed job set to false if in the original hash as false" do
-      m_hash = { :type => :ayl, :failed_job_handler => 'delete', :code => "String._ayl_after_create(2.to_s(2))" }
+      m_hash = { 'type' => 'ayl', 'failed_job_handler' => 'delete', 'code' => "String._ayl_after_create(2.to_s(2))" }
       m = Ayl::Message.from_hash(m_hash)
       expect(m.options.is_a?(Ayl::MessageOptions)).to be true
       expect(m.to_hash).to be m_hash
@@ -129,7 +129,7 @@ describe Ayl::Message do
     end
 
     it "should create a message with decay_failed job set to true if in the original hash as true" do
-      m_hash = { :type => :ayl, :failed_job_handler => 'decay', :code => "String._ayl_after_create(2.to_s(2))" }
+      m_hash = { 'type' => 'ayl', 'failed_job_handler' => 'decay', 'code' => "String._ayl_after_create(2.to_s(2))" }
       m = Ayl::Message.from_hash(m_hash)
       expect(m.options.is_a?(Ayl::MessageOptions)).to be true
       expect(m.to_hash).to be m_hash
