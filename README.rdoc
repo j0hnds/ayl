@@ -1,3 +1,5 @@
+{<img src="https://travis-ci.org/j0hnds/ayl.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/j0hnds/ayl]
+
 = ayl
 
 A small framework to support asynchronous method calls in Ruby.
